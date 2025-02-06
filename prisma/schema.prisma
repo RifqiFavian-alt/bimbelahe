@@ -1,0 +1,68 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  name      String
+  email     String   @unique
+  password  String   
+  role      Role     @default(ADMIN)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@map("users")
+
+}
+
+model Student {
+  id        String    @id @default(cuid())
+  name      String
+  email     String    @unique
+  phone     String?
+  payments  Payment[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  
+  @@map("students")
+
+}
+
+model Payment {
+  id        String   @id @default(cuid())
+  student   Student? @relation(fields: [studentId], references: [id], onDelete: SetNull)
+  studentId String?
+  month     Int
+  year      Int
+  isPaid    Boolean  @default(false)
+  paidAt    DateTime?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([studentId, month, year]) 
+  @@map("payments")
+}
+
+model Questionnaire {
+  id          String   @id @default(uuid()) 
+  name        String   
+  email       String   
+  question1   String  
+  question2   String  
+  question3   String   
+  question4   String   
+  review      String?  
+  isFeatured  Boolean  @default(false) 
+  createdAt   DateTime @default(now())
+
+  @@map("questionnaires")
+}
+
+enum Role {
+  ADMIN
+  USER
+}
