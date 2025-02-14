@@ -7,9 +7,7 @@ export async function POST(req: Request) {
   const { email, password } = await req.json();
 
   try {
-    const user = await prisma.user.findUnique({
-      where: { email },
-    });
+    const user = await prisma.user.findUnique({ where: { email } });
 
     if (!user) {
       return NextResponse.json({ success: false, message: "Invalid email or password" }, { status: 401 });
@@ -19,23 +17,30 @@ export async function POST(req: Request) {
     if (!isPasswordValid) {
       return NextResponse.json({ success: false, message: "Invalid email or password" }, { status: 401 });
     }
-    const payload = {
-      id: user.id,
-      name: user.name,
-      role: user.role,
-    };
 
+    const payload = { id: user.id, name: user.name, role: user.role };
     const secretKey = process.env.JWT_SECRET!;
-    const token = jwt.sign(payload, secretKey, { expiresIn: "1h" });
+    const refreshSecret = process.env.JWT_REFRESH_SECRET!;
+
+    const accessToken = jwt.sign(payload, secretKey, { expiresIn: "1h" });
+    const refreshToken = jwt.sign({ id: user.id }, refreshSecret, { expiresIn: "7d" });
 
     const response = NextResponse.json({ success: true, message: "Login successful" }, { status: 200 });
 
-    response.cookies.set("access_token", token, {
-      httpOnly: true, // Melindungi cookie dari akses JavaScript
-      secure: process.env.NODE_ENV === "production", // Hanya untuk HTTPS di production
-      sameSite: "strict", // Mencegah pengiriman lintas situs
-      path: "/", // Berlaku untuk semua route
-      maxAge: 60 * 60, // 1 jam
+    response.cookies.set("access_token", accessToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+      path: "/",
+      maxAge: 60 * 60,
+    });
+
+    response.cookies.set("refresh_token", refreshToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+      path: "/",
+      maxAge: 60 * 60 * 24 * 7,
     });
 
     return response;

@@ -13,6 +13,8 @@ type Payment = {
   paidAt?: string | null;
   createdAt: string;
   updatedAt: string;
+  student: { name: string };
+  studentName: string | null;
 };
 
 export type { PaymentFilters, Payment };

@@ -7,13 +7,11 @@ export async function POST() {
     const cookieStore = cookies();
     const token = (await cookieStore).get("access_token")?.value;
 
-    // Validasi token (opsional)
     if (token) {
       const secretKey = new TextEncoder().encode(process.env.JWT_SECRET!);
       await jwtVerify(token, secretKey);
     }
 
-    // Hapus cookie `access_token`
     const response = NextResponse.json(
       {
         success: true,
@@ -28,15 +26,22 @@ export async function POST() {
       secure: process.env.NODE_ENV === "production",
       sameSite: "strict",
       path: "/",
-      maxAge: 0, // Menghapus cookie
+      maxAge: 0,
+    });
+
+    response.cookies.set("refresh_token", "", {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+      path: "/",
+      maxAge: 0,
     });
 
     return response;
   } catch (error) {
     console.error("Error during logout:", error);
 
-    // Tanggapi dengan status sukses meskipun token tidak valid atau tidak ditemukan
-    // agar tidak membocorkan informasi
+    // Tetap tanggapi sukses agar tidak membocorkan informasi token yang valid atau tidak
     const response = NextResponse.json(
       {
         success: true,
@@ -47,6 +52,14 @@ export async function POST() {
     );
 
     response.cookies.set("access_token", "", {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+      path: "/",
+      maxAge: 0,
+    });
+
+    response.cookies.set("refresh_token", "", {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "strict",

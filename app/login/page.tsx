@@ -37,7 +37,7 @@ const Login: React.FC = () => {
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || "Login gagal");
 
-      router.push("/dashboard/user");
+      router.push("/dashboard/student");
     } catch (err: unknown) {
       if (err instanceof Error) {
         setError(err.message);
@@ -50,7 +50,7 @@ const Login: React.FC = () => {
   });
 
   return (
-    <div className="login_page h-screen flex flex-col justify-center items-center gap-y-10">
+    <div className="login_container h-screen flex flex-col justify-center items-center gap-y-10">
       <Image src="/ahe-logo.png" alt="ahe-logo" width={130} height={74} />
       <div className="login_card border flex flex-col justify-center items-center border-[#B2A0DA] w-72 sm:w-2/3 lg:w-1/3 rounded-md py-10 sm:py-16">
         <span className="text-xl sm:text-2xl font-bold text-[#433878] text-center">Selamat Datang Kembali!</span>

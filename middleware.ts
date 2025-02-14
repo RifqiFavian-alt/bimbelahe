@@ -2,7 +2,6 @@ import { NextRequest, NextResponse } from "next/server";
 import { jwtVerify } from "jose";
 
 export async function middleware(req: NextRequest) {
-  // Ambil token dari cookies atau Authorization header
   const token =
     req.cookies.get("access_token")?.value || // Cek JWT di cookies
     req.headers.get("Authorization")?.split(" ")[1]; // Fallback ke Authorization header
@@ -17,7 +16,6 @@ export async function middleware(req: NextRequest) {
 
     const role = payload.role;
 
-    // Cek akses berdasarkan role
     if (req.nextUrl.pathname.startsWith("/dashboard/user") && role !== "ADMIN") {
       return NextResponse.json({ success: false, message: "Forbidden: Admin access required" }, { status: 403 });
     }
@@ -29,5 +27,5 @@ export async function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/api/students/:path*", "/api/payments/:path*", "/api/questionnaires/:path*", "/api/users/:path*", "/dashboard/:path*"],
+  matcher: ["/api/students/:path*", "/api/payments/:path*", "/api/questionnaires/:path*", "/api/users/:path*", "/api/get-profile", "/dashboard/:path*"],
 };
