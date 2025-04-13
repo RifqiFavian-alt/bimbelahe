@@ -6,32 +6,34 @@ export async function DELETE(req: Request) {
   try {
     const { id } = await req.json();
 
-    // Validasi input
     if (!id) {
-      return NextResponse.json({ success: false, message: "User ID is required" }, { status: 400 });
+      return NextResponse.json({ success: false, message: "ID pengguna wajib diisi." }, { status: 400 });
     }
 
-    // Hapus user berdasarkan ID
-    await prisma.user.delete({
-      where: { id },
-    });
+    await prisma.user.delete({ where: { id } });
 
-    return NextResponse.json({
-      success: true,
-      message: "User deleted successfully",
-    });
+    return NextResponse.json(
+      {
+        success: true,
+        message: "Pengguna berhasil dihapus.",
+      },
+      { status: 200 }
+    );
   } catch (error) {
-    console.error("Error deleting user:", error);
+    console.error("Terjadi kesalahan saat menghapus pengguna:", error);
 
-    // Tangani error Prisma
     if (error instanceof Prisma.PrismaClientKnownRequestError) {
       if (error.code === "P2025") {
-        // Error jika user tidak ditemukan
-        return NextResponse.json({ success: false, message: "User not found" }, { status: 404 });
+        return NextResponse.json({ success: false, message: "Pengguna tidak ditemukan." }, { status: 404 });
       }
     }
 
-    // Tangani error lainnya
-    return NextResponse.json({ success: false, message: "Failed to delete user" }, { status: 500 });
+    return NextResponse.json(
+      {
+        success: false,
+        message: "Gagal menghapus pengguna. Silakan coba lagi nanti.",
+      },
+      { status: 500 }
+    );
   }
 }

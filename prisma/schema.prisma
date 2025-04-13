@@ -62,7 +62,18 @@ model Questionnaire {
   @@map("questionnaires")
 }
 
+model Document {
+  id        String   @id @default(uuid())
+  title     String
+  content   String
+  format    String   
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
 enum Role {
   ADMIN
   USER
 }
+
+

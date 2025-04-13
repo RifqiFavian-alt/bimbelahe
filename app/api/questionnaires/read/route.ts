@@ -1,39 +1,53 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { Prisma } from "@prisma/client";
 
 export async function GET(req: Request) {
   try {
     const { searchParams } = new URL(req.url);
+    const studentName = searchParams.get("name");
     const isFeatured = searchParams.get("isFeatured") === "true";
     const page = parseInt(searchParams.get("page") || "1", 10);
     const limit = parseInt(searchParams.get("limit") || "10", 10);
 
-    // Validate pagination inputs
     if (isNaN(page) || page < 1 || isNaN(limit) || limit < 1) {
-      return NextResponse.json({ success: false, message: "Invalid page or limit parameters" }, { status: 400 });
+      return NextResponse.json({ success: false, message: "Parameter halaman atau batas tidak valid." }, { status: 400 });
     }
 
     const skip = (page - 1) * limit;
+
+    const filters: Prisma.QuestionnaireWhereInput = {};
+
+    if (studentName) {
+      filters.name = { contains: studentName, mode: "insensitive" };
+    }
+
+    filters.isFeatured = isFeatured;
 
     const [questionnaires, totalQuestionnaires] = await Promise.all([
       prisma.questionnaire.findMany({
         select: {
           id: true,
+          question1: true,
+          question2: true,
+          question3: true,
+          question4: true,
           name: true,
           email: true,
           review: true,
           isFeatured: true,
         },
-        where: isFeatured ? { isFeatured: true } : undefined,
+        where: filters,
         skip,
         take: limit,
         orderBy: { createdAt: "desc" },
       }),
       prisma.questionnaire.count({
-        where: isFeatured ? { isFeatured: true } : undefined,
+        where: filters,
       }),
     ]);
-    const responseMessage = totalQuestionnaires === 0 ? "No data found" : "Payments retrieved successfully";
+
+    const responseMessage = totalQuestionnaires === 0 ? "Tidak ada data kuesioner yang ditemukan." : "Data kuesioner berhasil diambil.";
 
     return NextResponse.json({
       success: true,
@@ -48,7 +62,7 @@ export async function GET(req: Request) {
       },
     });
   } catch (error) {
-    console.error("Error fetching questionnaires:", error);
-    return NextResponse.json({ success: false, message: "Failed to fetch questionnaires" }, { status: 500 });
+    console.error("Terjadi kesalahan saat mengambil data kuesioner:", error);
+    return NextResponse.json({ success: false, message: "Gagal mengambil data kuesioner. Silakan coba lagi nanti." }, { status: 500 });
   }
 }

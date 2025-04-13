@@ -6,16 +6,20 @@ export async function POST(req: Request) {
     const { name, email, question1, question2, question3, question4, review } = await req.json();
 
     if (!name || !email || !question1 || !question2 || !question3 || !question4) {
-      return NextResponse.json({ success: false, message: "All fields except review are required" }, { status: 400 });
+      return NextResponse.json({ success: false, message: "Semua kolom wajib diisi, kecuali bagian ulasan (review)." }, { status: 400 });
     }
 
     const questionnaire = await prisma.questionnaire.create({
       data: { name, email, question1, question2, question3, question4, review },
     });
 
-    return NextResponse.json({ success: true, data: questionnaire });
+    return NextResponse.json({
+      success: true,
+      message: "Kuesioner berhasil disimpan.",
+      data: questionnaire,
+    });
   } catch (error) {
-    console.error("Error saving questionnaire:", error);
-    return NextResponse.json({ success: false, message: "Failed to save questionnaire" }, { status: 500 });
+    console.error("Error saat menyimpan kuesioner:", error);
+    return NextResponse.json({ success: false, message: "Gagal menyimpan kuesioner. Silakan coba lagi nanti." }, { status: 500 });
   }
 }

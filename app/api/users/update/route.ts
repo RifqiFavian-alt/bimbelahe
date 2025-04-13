@@ -5,17 +5,23 @@ import { Prisma } from "@prisma/client";
 
 export async function PUT(req: Request) {
   try {
-    const { id, name, email, password, role } = await req.json();
+    const { id, name, email, currentEmail, password, role } = await req.json();
 
-    if (!id) {
-      return NextResponse.json({ success: false, message: "User ID is required" }, { status: 400 });
+    if (!id || !name || !email || !currentEmail || !role) {
+      return NextResponse.json({ success: false, message: "Data pengguna tidak lengkap." }, { status: 400 });
     }
 
-    const updateData: Partial<Prisma.UserUpdateInput> = {};
+    const updateData: Partial<Prisma.UserUpdateInput> = { name, role };
 
-    if (name) updateData.name = name;
-    if (email) updateData.email = email;
-    if (role) updateData.role = role;
+    if (email !== currentEmail) {
+      const existingUser = await prisma.user.findUnique({ where: { email } });
+
+      if (existingUser && existingUser.id !== id) {
+        return NextResponse.json({ success: false, message: "Email sudah terdaftar. Gunakan email lain." }, { status: 400 });
+      }
+
+      updateData.email = email;
+    }
 
     if (password) {
       updateData.password = await bcrypt.hash(password, 10);
@@ -28,7 +34,7 @@ export async function PUT(req: Request) {
 
     return NextResponse.json({
       success: true,
-      message: "User updated successfully",
+      message: "Data pengguna berhasil diperbarui.",
       data: {
         id: updatedUser.id,
         name: updatedUser.name,
@@ -37,11 +43,14 @@ export async function PUT(req: Request) {
       },
     });
   } catch (error) {
+    console.error("Terjadi kesalahan saat memperbarui pengguna:", error);
+
     if (error instanceof Prisma.PrismaClientKnownRequestError) {
       if (error.code === "P2025") {
-        return NextResponse.json({ success: false, message: "User not found" }, { status: 404 });
+        return NextResponse.json({ success: false, message: "Pengguna tidak ditemukan." }, { status: 404 });
       }
     }
-    return NextResponse.json({ success: false, message: "Failed to update user" }, { status: 500 });
+
+    return NextResponse.json({ success: false, message: "Gagal memperbarui data pengguna." }, { status: 500 });
   }
 }

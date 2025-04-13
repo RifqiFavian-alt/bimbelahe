@@ -10,22 +10,22 @@ export async function POST(req: Request) {
     const user = await prisma.user.findUnique({ where: { email } });
 
     if (!user) {
-      return NextResponse.json({ success: false, message: "Invalid email or password" }, { status: 401 });
+      return NextResponse.json({ success: false, message: "Email atau kata sandi yang Anda masukkan salah." }, { status: 401 });
     }
 
     const isPasswordValid = await bcrypt.compare(password, user.password);
     if (!isPasswordValid) {
-      return NextResponse.json({ success: false, message: "Invalid email or password" }, { status: 401 });
+      return NextResponse.json({ success: false, message: "Email atau kata sandi yang Anda masukkan salah." }, { status: 401 });
     }
 
     const payload = { id: user.id, name: user.name, role: user.role };
     const secretKey = process.env.JWT_SECRET!;
     const refreshSecret = process.env.JWT_REFRESH_SECRET!;
 
-    const accessToken = jwt.sign(payload, secretKey, { expiresIn: "1h" });
-    const refreshToken = jwt.sign({ id: user.id }, refreshSecret, { expiresIn: "7d" });
+    const accessToken = jwt.sign(payload, secretKey, { expiresIn: "5s" });
+    const refreshToken = jwt.sign(payload, refreshSecret, { expiresIn: "7d" });
 
-    const response = NextResponse.json({ success: true, message: "Login successful" }, { status: 200 });
+    const response = NextResponse.json({ success: true, message: "Berhasil masuk. Selamat datang kembali!" }, { status: 200 });
 
     response.cookies.set("access_token", accessToken, {
       httpOnly: true,
@@ -45,6 +45,6 @@ export async function POST(req: Request) {
 
     return response;
   } catch (err) {
-    return NextResponse.json({ success: false, message: "Something went wrong", error: err }, { status: 500 });
+    return NextResponse.json({ success: false, message: "Terjadi kesalahan pada server. Silakan coba lagi nanti.", error: err }, { status: 500 });
   }
 }

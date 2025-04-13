@@ -1,7 +1,10 @@
-import React from "react";
+import { Suspense } from "react";
+import Users from "./Users";
 
-function User() {
-  return <div>User</div>;
+export default function Page() {
+  return (
+    <Suspense>
+      <Users />
+    </Suspense>
+  );
 }
-
-export default User;

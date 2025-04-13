@@ -3,25 +3,41 @@ import { prisma } from "@/lib/prisma";
 
 export async function PUT(req: Request) {
   try {
-    const { studentId, name, email, phone } = await req.json();
-    if (!studentId || !name || !email || !phone) {
-      return NextResponse.json({ success: false, message: "Invalid input" }, { status: 400 });
+    const { id, name, email, phone } = await req.json();
+
+    if (!id || !name || !email || !phone) {
+      return NextResponse.json({ success: false, message: "Semua field wajib diisi." }, { status: 400 });
     }
-    const updatedStudent = await prisma.student.update({
-      where: { id: studentId },
-      data: {
-        name,
-        email,
-        phone,
-      },
+
+    const existingStudent = await prisma.student.findUnique({
+      where: { id: id },
     });
 
-    return NextResponse.json({
-      success: true,
-      message: "Student updated successfully",
-      data: updatedStudent,
+    if (!existingStudent) {
+      return NextResponse.json({ success: false, message: "Siswa tidak ditemukan." }, { status: 404 });
+    }
+
+    const updatedStudent = await prisma.student.update({
+      where: { id: id },
+      data: { name, email, phone },
     });
+
+    return NextResponse.json(
+      {
+        success: true,
+        message: "Data siswa berhasil diperbarui.",
+        data: updatedStudent,
+      },
+      { status: 200 }
+    );
   } catch (error) {
-    return NextResponse.json({ success: false, message: "Failed to update student", error: error }, { status: 500 });
+    console.error("Terjadi kesalahan saat memperbarui data siswa:", error);
+    return NextResponse.json(
+      {
+        success: false,
+        message: "Gagal memperbarui data siswa. Silakan coba lagi nanti.",
+      },
+      { status: 500 }
+    );
   }
 }

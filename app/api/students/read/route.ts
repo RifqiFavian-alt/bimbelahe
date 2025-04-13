@@ -4,18 +4,12 @@ import { prisma } from "@/lib/prisma";
 export async function GET(req: Request) {
   try {
     const { searchParams } = new URL(req.url);
-    const page = parseInt(searchParams.get("page") || "1", 10); // opsional
-    const limit = parseInt(searchParams.get("limit") || "10", 10); // opsional
-    const name = searchParams.get("name") || ""; // opsional
+    const page = parseInt(searchParams.get("page") || "1", 10);
+    const limit = parseInt(searchParams.get("limit") || "10", 10);
+    const name = searchParams.get("name") || "";
 
     if (isNaN(page) || page < 1 || isNaN(limit) || limit < 1) {
-      return NextResponse.json(
-        {
-          success: false,
-          message: "Invalid page or limit parameters",
-        },
-        { status: 400 }
-      );
+      return NextResponse.json({ success: false, message: "Parameter halaman dan batas harus berupa angka yang valid." }, { status: 400 });
     }
 
     const skip = (page - 1) * limit;
@@ -30,7 +24,8 @@ export async function GET(req: Request) {
         },
         where: {
           name: {
-            contains: name.trim(),
+            contains: name,
+            mode: "insensitive",
           },
         },
         skip,
@@ -40,13 +35,14 @@ export async function GET(req: Request) {
       prisma.student.count({
         where: {
           name: {
-            contains: name.trim(),
+            contains: name,
+            mode: "insensitive",
           },
         },
       }),
     ]);
 
-    const responseMessage = totalStudents === 0 ? "No data found" : "Payments retrieved successfully";
+    const responseMessage = totalStudents === 0 ? "Tidak ada data siswa yang ditemukan." : "Data siswa berhasil diambil.";
 
     return NextResponse.json(
       {
@@ -64,12 +60,11 @@ export async function GET(req: Request) {
       { status: 200 }
     );
   } catch (error) {
-    console.error("Error fetching students:", error);
+    console.error("Terjadi kesalahan saat mengambil data siswa:", error);
     return NextResponse.json(
       {
         success: false,
-        message: "Failed to fetch students",
-        error: error instanceof Error ? error.message : error,
+        message: "Gagal mengambil data siswa. Silakan coba lagi nanti.",
       },
       { status: 500 }
     );

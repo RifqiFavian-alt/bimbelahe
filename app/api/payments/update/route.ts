@@ -1,12 +1,12 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 
-export async function PUT(req: Request) {
+export async function PATCH(req: Request) {
   try {
     const { paymentId, status } = await req.json();
 
     if (!paymentId || typeof status !== "boolean") {
-      return NextResponse.json({ success: false, message: "Invalid input" }, { status: 400 });
+      return NextResponse.json({ success: false, message: "Data yang diberikan tidak valid." }, { status: 400 });
     }
 
     const updatedPayment = await prisma.payment.update({
@@ -16,10 +16,10 @@ export async function PUT(req: Request) {
 
     return NextResponse.json({
       success: true,
-      message: "Payment updated successfully",
+      message: "Status pembayaran berhasil diperbarui.",
       data: updatedPayment,
     });
   } catch (error) {
-    return NextResponse.json({ success: false, message: "Failed to update payment", error: error }, { status: 500 });
+    return NextResponse.json({ success: false, message: "Gagal memperbarui status pembayaran.", error: error }, { status: 500 });
   }
 }

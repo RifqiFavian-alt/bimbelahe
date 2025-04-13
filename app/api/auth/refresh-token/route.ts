@@ -7,14 +7,14 @@ export async function POST() {
   const refreshToken = cookieStore.get("refresh_token")?.value;
 
   if (!refreshToken) {
-    return NextResponse.json({ success: false, message: "No refresh token provided" }, { status: 401 });
+    return NextResponse.json({ success: false, message: "Token refresh tidak ditemukan." }, { status: 401 });
   }
 
   try {
-    const decoded = jwt.verify(refreshToken, process.env.JWT_REFRESH_SECRET!) as { id: string };
-
-    const newAccessToken = jwt.sign({ id: decoded.id }, process.env.JWT_SECRET!, { expiresIn: "1h" });
-    const newRefreshToken = jwt.sign({ id: decoded.id }, process.env.JWT_REFRESH_SECRET!, { expiresIn: "7d" });
+    const decoded = jwt.verify(refreshToken, process.env.JWT_REFRESH_SECRET!) as { id: string; name: string; role: string };
+    const payload = { id: decoded.id, name: decoded.name, role: decoded.role };
+    const newAccessToken = jwt.sign(payload, process.env.JWT_SECRET!, { expiresIn: "1h" });
+    const newRefreshToken = jwt.sign(payload, process.env.JWT_REFRESH_SECRET!, { expiresIn: "7d" });
 
     const response = NextResponse.json({ success: true });
 
@@ -36,6 +36,6 @@ export async function POST() {
 
     return response;
   } catch (error) {
-    return NextResponse.json({ success: false, message: "Invalid refresh token", error }, { status: 403 });
+    return NextResponse.json({ success: false, message: "Token refresh tidak valid atau telah kedaluwarsa.", error }, { status: 403 });
   }
 }

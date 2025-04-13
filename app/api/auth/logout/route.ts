@@ -15,7 +15,7 @@ export async function POST() {
     const response = NextResponse.json(
       {
         success: true,
-        message: "Logout successful",
+        message: "Anda telah berhasil keluar.",
         loggedOutAt: new Date().toISOString(),
       },
       { status: 200 }
@@ -39,13 +39,12 @@ export async function POST() {
 
     return response;
   } catch (error) {
-    console.error("Error during logout:", error);
+    console.error("Terjadi kesalahan saat logout:", error);
 
-    // Tetap tanggapi sukses agar tidak membocorkan informasi token yang valid atau tidak
     const response = NextResponse.json(
       {
         success: true,
-        message: "Logout successful",
+        message: "Anda telah berhasil keluar.",
         loggedOutAt: new Date().toISOString(),
       },
       { status: 200 }

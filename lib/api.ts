@@ -1,5 +1,5 @@
 import axios, { AxiosError, AxiosRequestConfig } from "axios";
-
+import { redirect } from "next/navigation";
 const api = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL,
   withCredentials: true,
@@ -21,7 +21,9 @@ const processQueue = (error: AxiosError | null) => {
 };
 
 api.interceptors.response.use(
-  (response) => response,
+  (response) => {
+    return response;
+  },
   async (error: AxiosError) => {
     const originalRequest = error.config as AxiosRequestConfig & { _retry?: boolean };
 
@@ -29,12 +31,7 @@ api.interceptors.response.use(
       if (isRefreshing) {
         return new Promise<unknown>((resolve, reject) => {
           failedQueue.push({ resolve, reject });
-        })
-          .then(() => api.request(originalRequest))
-          .catch(() => {
-            api.post("/api/auth/logout");
-            window.location.href = "/login";
-          });
+        }).then(() => api.request(originalRequest));
       }
 
       originalRequest._retry = true;
@@ -50,8 +47,12 @@ api.interceptors.response.use(
       } catch (refreshError) {
         processQueue(refreshError as AxiosError);
         console.error("Gagal refresh token, logout pengguna");
-        api.post("/api/auth/logout");
-        window.location.href = "/login";
+        try {
+          await api.post("/api/auth/logout");
+        } catch (logoutError) {
+          console.error("Gagal logout:", logoutError);
+        }
+        redirect("/login?error=SessionExpired");
       } finally {
         isRefreshing = false;
       }
@@ -61,4 +62,4 @@ api.interceptors.response.use(
   }
 );
 
-export default api;
+export { api };

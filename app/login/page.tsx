@@ -1,11 +1,13 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { api } from "@/lib/api";
+import axios from "axios";
 
 const loginFormScheme = z.object({
   email: z.string().min(1, { message: "Harap isi kolom ini." }).email("Struktur email tidak valid."),
@@ -19,6 +21,7 @@ const Login: React.FC = () => {
     resolver: zodResolver(loginFormScheme),
   });
   const router = useRouter();
+
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
@@ -27,19 +30,13 @@ const Login: React.FC = () => {
     setLoading(true);
 
     try {
-      const res = await fetch("/api/auth/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(values),
-        credentials: "include",
-      });
-
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.message || "Login gagal");
-
+      const { data } = await api.post("/api/auth/login", values);
+      if (!data.success) throw new Error(data.message || "Login gagal");
       router.push("/dashboard/student");
-    } catch (err: unknown) {
-      if (err instanceof Error) {
+    } catch (err) {
+      if (axios.isAxiosError(err)) {
+        setError(err.response?.data?.message || "Terjadi kesalahan, silakan coba lagi.");
+      } else if (err instanceof Error) {
         setError(err.message);
       } else {
         setError("Terjadi kesalahan, silakan coba lagi.");
@@ -49,9 +46,18 @@ const Login: React.FC = () => {
     }
   });
 
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const urlParams = new URLSearchParams(window.location.search);
+      if (urlParams.get("error") === "SessionExpired") {
+        setError("Sesi Anda telah berakhir. Silakan login kembali.");
+      }
+    }
+  }, []);
+
   return (
     <div className="login_container h-screen flex flex-col justify-center items-center gap-y-10">
-      <Image src="/ahe-logo.png" alt="ahe-logo" width={130} height={74} />
+      <Image src="/ahe-logo.webp" alt="ahe-logo" width={130} height={74} priority={true} />
       <div className="login_card border flex flex-col justify-center items-center border-[#B2A0DA] w-72 sm:w-2/3 lg:w-1/3 rounded-md py-10 sm:py-16">
         <span className="text-xl sm:text-2xl font-bold text-[#433878] text-center">Selamat Datang Kembali!</span>
         <p className="text-xs sm:text-sm w-2/3 text-[#433878] text-center">Silakan masukkan informasi akun Anda untuk melanjutkan.</p>
@@ -84,7 +90,7 @@ const Login: React.FC = () => {
             <input type="password" placeholder="Password" {...register("password")} required className="w-full text-[#433878] p-2 mt-2 rounded-md placeholder:text-sm focus:outline-none" />
           </div>
 
-          {error && <p className="text-red-500 text-sm text-center">Email atau password tidak valid</p>}
+          {error && <p className="text-red-500 text-sm text-center">{error}</p>}
 
           <button type="submit" disabled={loading} className={`form_button w-full h-12 rounded-md text-white ${loading ? "bg-[#D7D4E7]" : "bg-[#7E60BF]"}`}>
             {loading ? "Loading..." : "Masuk"}

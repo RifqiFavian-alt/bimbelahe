@@ -6,7 +6,7 @@ export async function PATCH(req: Request) {
     const { id, isFeatured } = await req.json();
 
     if (!id) {
-      return NextResponse.json({ success: false, message: "Questionnaire ID is required" }, { status: 400 });
+      return NextResponse.json({ success: false, message: "ID kuesioner diperlukan." }, { status: 400 });
     }
 
     const updatedQuestionnaire = await prisma.questionnaire.update({
@@ -17,10 +17,10 @@ export async function PATCH(req: Request) {
     return NextResponse.json({
       success: true,
       data: updatedQuestionnaire,
-      message: `Questionnaire ${isFeatured ? "featured" : "unfeatured"} successfully`,
+      message: `Kuesioner berhasil ${isFeatured ? "ditampilkan" : "disembunyikan"} sebagai unggulan.`,
     });
   } catch (error) {
-    console.error("Error updating questionnaire:", error);
-    return NextResponse.json({ success: false, message: "Failed to update questionnaire" }, { status: 500 });
+    console.error("Terjadi kesalahan saat memperbarui kuesioner:", error);
+    return NextResponse.json({ success: false, message: "Gagal memperbarui kuesioner. Silakan coba lagi nanti." }, { status: 500 });
   }
 }

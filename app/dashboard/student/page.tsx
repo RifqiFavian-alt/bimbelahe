@@ -1,7 +1,10 @@
-import React from "react";
+import { Suspense } from "react";
+import Students from "./Students";
 
-function Student() {
-  return <div>Siswa</div>;
+export default function Page() {
+  return (
+    <Suspense>
+      <Students />
+    </Suspense>
+  );
 }
-
-export default Student;

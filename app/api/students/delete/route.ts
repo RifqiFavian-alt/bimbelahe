@@ -4,12 +4,24 @@ import { prisma } from "@/lib/prisma";
 export async function DELETE(req: Request) {
   try {
     const { id } = await req.json();
-    const deletedStudent = await prisma.student.delete({
+
+    if (!id) {
+      return NextResponse.json({ success: false, message: "ID siswa diperlukan untuk menghapus data." }, { status: 400 });
+    }
+
+    const existingStudent = await prisma.student.findUnique({
       where: { id },
     });
 
-    return NextResponse.json({ success: true, data: deletedStudent }, { status: 200 });
+    if (!existingStudent) {
+      return NextResponse.json({ success: false, message: "Siswa tidak ditemukan atau sudah dihapus." }, { status: 404 });
+    }
+
+    await prisma.student.delete({ where: { id } });
+
+    return NextResponse.json({ success: true, message: "Siswa berhasil dihapus." }, { status: 200 });
   } catch (error) {
-    return NextResponse.json({ success: false, message: "Failed to delete student", error }, { status: 500 });
+    console.error("Terjadi kesalahan saat menghapus siswa:", error);
+    return NextResponse.json({ success: false, message: "Gagal menghapus siswa. Silakan coba lagi nanti." }, { status: 500 });
   }
 }
