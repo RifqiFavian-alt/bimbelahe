@@ -22,6 +22,7 @@ export async function middleware(req: NextRequest) {
     }
 
     return NextResponse.next();
+
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (err) {
     if (refreshToken) {

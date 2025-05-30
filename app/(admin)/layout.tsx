@@ -1,5 +1,5 @@
 "use client";
-import { Navbar } from "@/components/navbar";
+import { Navbar } from "@/components/admin-navbar";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { useIsMobile } from "@/hooks/use-is-mobile";

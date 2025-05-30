@@ -1,5 +1,3 @@
-version: "3.8"
-
 services:
   web:
     container_name: nextjs-dev
@@ -14,8 +12,8 @@ services:
     develop:
       watch:
         - action: sync
-          path: .
-          target: /app
+          path: ./
+          target: /app/
           ignore:
             - node_modules/
             - .git/

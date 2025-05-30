@@ -22,7 +22,9 @@ export async function GET(req: Request) {
       filters.name = { contains: studentName, mode: "insensitive" };
     }
 
-    filters.isFeatured = isFeatured;
+    if (isFeatured) {
+      filters.isFeatured = isFeatured;
+    }
 
     const [questionnaires, totalQuestionnaires] = await Promise.all([
       prisma.questionnaire.findMany({
