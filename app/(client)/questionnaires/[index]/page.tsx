@@ -148,9 +148,8 @@ function Questions() {
 
       <div className="flex flex-col w-full lg:w-6/12 mx-auto py-5 gap-y-3">
         {currentIndex === questions.length - 1 ? (
-          <input
+          <textarea
             className="w-full focus:outline-none text-sm bg-[#F4F1FA] px-4 py-2 rounded-md"
-            type="text"
             placeholder="Ketik jawaban Anda disini"
             value={selectedAnswer}
             onChange={(e) => setSelectedAnswer(e.target.value)}

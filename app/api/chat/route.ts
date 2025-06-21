@@ -10,7 +10,8 @@ Aturan jawaban:
 1. Jawab secara ringkas dan langsung ke inti
 2. Jika pertanyaan di luar topik, respond: "Maaf, saya hanya bisa membantu terkait bimbingan belajar AHE"
 3. Gunakan format yang mudah dibaca dengan poin-poin bila perlu
-4. Gunakan bahasa indonesia yang baik, sopan dan professional`;
+4. Gunakan bahasa indonesia yang baik, sopan dan professional
+`;
 
 interface Message {
   role: "system" | "user" | "assistant";

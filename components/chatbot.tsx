@@ -135,12 +135,12 @@ const Chatbot = forwardRef(function Chatbot(_props, refDialog: ForwardedRef<HTML
         <div className="messages overflow-auto flex flex-col flex-auto px-2 py-5 gap-y-7 [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-track]:rounded-full [&::-webkit-scrollbar-thumb]:bg-[#433878] [&::-webkit-scrollbar-thumb]:rounded-full">
           {messages.map((msg, i) =>
             msg.role === "user" ? (
-              <div key={i} className={`message ${msg.role} w-5/6 self-end justify-self-end flex flex-col gap-y-1`}>
+              <div key={i} className={`message-${msg.role} w-5/6 self-end justify-self-end flex flex-col gap-y-1`}>
                 <div className="bg-[#E6E0F3] text-sm text-[#433878] rounded-3xl px-6 py-4">{msg.content}</div>
                 <span className="text-end text-sm text-[#B2A0DA]">User</span>
               </div>
             ) : (
-              <div key={i} className={`message ${msg.role}`}>
+              <div key={i} className={`message-${msg.role}`}>
                 <div className="w-5/6 text-sm bg-[#e6e0f3] text-[#433878] rounded-3xl px-6 py-4">
                   <ReactMarkdown>{msg.content}</ReactMarkdown>
                 </div>
@@ -158,14 +158,14 @@ const Chatbot = forwardRef(function Chatbot(_props, refDialog: ForwardedRef<HTML
           <div className="flex-auto h-10 rounded-xl bg-[#E6E0F3] flex items-center px-4 gap-x-3">
             <IoSparkles className="text-[#433878]" />
             <input
-              className="bg-transparent outline-none text-sm text-[#433878] placeholder:text-[#847CA9] placeholder:text-sm w-full"
+              className="chatbot__input bg-transparent outline-none text-sm text-[#433878] placeholder:text-[#847CA9] placeholder:text-sm w-full"
               value={input}
               onChange={(e) => setInput(e.target.value)}
               placeholder="Tanyakan sesuatu tentang AHE..."
               disabled={isLoading}
             />
           </div>
-          <button type="submit" disabled={isLoading}>
+          <button type="submit" disabled={isLoading} className="chatbot__send-button">
             <RiSendPlane2Fill className="text-[#433878] text-2xl" />
           </button>
         </form>

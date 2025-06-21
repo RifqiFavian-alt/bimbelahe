@@ -5,6 +5,7 @@ import { Prisma } from "@prisma/client";
 export async function GET(req: Request) {
   try {
     const { searchParams } = new URL(req.url);
+    const id = searchParams.get("id");
     const studentName = searchParams.get("name");
     const isFeatured = searchParams.get("isFeatured") === "true";
     const page = parseInt(searchParams.get("page") || "1", 10);
@@ -24,6 +25,10 @@ export async function GET(req: Request) {
 
     if (isFeatured) {
       filters.isFeatured = isFeatured;
+    }
+
+    if (id) {
+      filters.id = id;
     }
 
     const [questionnaires, totalQuestionnaires] = await Promise.all([

@@ -1,10 +1,11 @@
 "use client";
-import React, { useRef } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import Image, { StaticImageData } from "next/image";
 import { Chatbot } from "@/components/chatbot";
 import { FaQuoteLeft, FaWhatsapp } from "react-icons/fa6";
 import { EmblaCarousel } from "@/components/embla-carousel";
 import { EmblaOptionsType } from "embla-carousel";
+import { ReviewCarousel } from "@/types/review";
 
 // Image Assets
 import arrow1 from "@/public/assets/arrow1.webp";
@@ -21,8 +22,14 @@ import wave from "@/public/assets/wave.webp";
 import alasekolah from "@/public/assets/ala_sekolah_logo.webp";
 import prisma from "@/public/assets/prisma_logo.webp";
 import brainy from "@/public/assets/brainy_logo.webp";
+import axios from "axios";
+import { api } from "@/lib/api";
+import { useRouter } from "next/navigation";
+
+type Slides = Pick<ReviewCarousel, "name" | "review">;
 
 function Home() {
+  const router = useRouter();
   const OPTIONS: EmblaOptionsType = {
     skipSnaps: true,
     slidesToScroll: 3,
@@ -38,32 +45,26 @@ function Home() {
       },
     },
   };
-  const SLIDES = [
-    {
-      name: "Rifqi Favian H",
-      review: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt",
-    },
-    {
-      name: "John Doe",
-      review: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt",
-    },
-    {
-      name: "Jane Doe",
-      review: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt",
-    },
-    {
-      name: "Rifqi Favian H",
-      review: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt",
-    },
-    {
-      name: "John Doe",
-      review: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt",
-    },
-    {
-      name: "Jane Doe",
-      review: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt",
-    },
-  ];
+  const [slides, setSlides] = useState<Slides[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const getUsers = useCallback(async () => {
+    try {
+      setIsLoading(true);
+      const { data } = await api.get(`/api/questionnaires/read?isFeatured=true`);
+      console.log(data);
+      if (!data.success) throw new Error(data.message);
+      setSlides(data.data.questionnaires.map((questionnaire: ReviewCarousel) => ({ name: questionnaire.name, review: questionnaire.review })));
+    } catch (error) {
+      if (axios.isAxiosError(error)) console.error(error.response?.data?.message || "Terjadi kesalahan, silakan coba lagi.");
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    getUsers();
+  }, [getUsers]);
+
   const dialog = useRef<HTMLDialogElement>(null);
   return (
     <>
@@ -81,8 +82,12 @@ function Home() {
               </span>
             </div>
             <div className="hero__button flex justify-center md:justify-start gap-x-4">
-              <button className="min-w-[150px] bg-[#7E60BF] text-white py-3 md:px-4 md:py-3 rounded-sm">Mulai Belajar</button>
-              <button className="min-w-[150px] border border-[#7E60BF] py-3 text-[#7E60BF] md:px-4 md:py-3 rounded-sm">Hubungi Kami</button>
+              <button className="min-w-[150px] bg-[#7E60BF] text-white py-3 md:px-4 md:py-3 rounded-sm" onClick={() => router.push("/questionnaires")}>
+                Mulai Belajar
+              </button>
+              <button className="min-w-[150px] border border-[#7E60BF] py-3 text-[#7E60BF] md:px-4 md:py-3 rounded-sm" onClick={() => router.push("https://wa.link/tev292")}>
+                Hubungi Kami
+              </button>
             </div>
           </div>
           <Image src={heroimage} alt="heroimage" width={550} height={550} className="min-w-[300px]" />
@@ -155,13 +160,13 @@ function Home() {
         </div>
 
         {/* Other */}
-        <div className="flex flex-col relative md:flex-row justify-center items-center md:gap-x-10 gap-x-36 py-5 px-5">
+        <div className="other flex flex-col relative md:flex-row justify-center items-center md:gap-x-10 gap-x-36 py-5 px-5">
           <Image src="/assets/illustration1.webp" alt="illustration1" width={450} height={450} />
           <Image src={arrow2} alt="assets" className="absolute bottom-10 -right-10 w-48 md:-right-32 md:bottom-20 lg:top-48 md:w-72 -z-10" />
           <div className="flex flex-col gap-y-5 md:gap-y-3 lg:gap-y-7 items-center justify-center">
             <span className="text-3xl md:text-2xl lg:text-4xl font-bold text-[#433878] max-w-96 md:max-w-4xl lg:max-w-96 ">Belajar lebih terarah dengan jadwal yang fleksibel!</span>
             <span className="text-base text-[#433878] max-w-96 md:max-w-5xl lg:max-w-96">Jadwalkan waktu terbaik untuk anak Anda dan wujudkan pembelajaran yang menyenangkan! </span>
-            <button className="bg-[#7E60BF] text-white px-4 py-3 rounded-sm self-start flex gap-x-3 items-center">
+            <button className="bg-[#7E60BF] text-white px-4 py-3 rounded-sm self-start flex gap-x-3 items-center" onClick={() => router.push("https://wa.link/tev292")}>
               Diskusikan <FaWhatsapp className="w-5 h-5" />
             </button>
           </div>
@@ -175,18 +180,31 @@ function Home() {
             <span className="text-sm font-semibold tracking-wide">ULASAN PENGGUNA</span>
             <span className="text-3xl font-semibold max-w-96">Pendapat Mereka Tentang Kami</span>
           </div>
-          <EmblaCarousel options={OPTIONS}>
-            {SLIDES.map((slide, index) => (
-              <div className="embla__slide bg-white border border-[#7E60BF] rounded-md flex flex-col items-center justify-center gap-y-7 h-[var(--slide-height)]" key={index}>
-                <FaQuoteLeft className="text-4xl text-[#433878]" />
-                <span className="text-base text-[#433878] text-center font-normal">{slide.review}</span>
-                <span className="bg-[#F4F1FA] rounded-full px-6 py-3 text-[#433878] text-sm font-normal w-fit mt-4"> {slide.name}</span>
-              </div>
-            ))}
-          </EmblaCarousel>
+          {isLoading ? (
+            <div className="flex justify-center items-center">
+              <p>Memuat ulasan...</p>
+            </div>
+          ) : slides.length > 0 ? (
+            <EmblaCarousel options={OPTIONS}>
+              {slides.map((slide, index) => (
+                <div className="embla__slide bg-white border border-[#7E60BF] rounded-md flex flex-col items-center justify-center gap-y-7 h-[var(--slide-height)]" key={index}>
+                  <FaQuoteLeft className="text-4xl text-[#433878]" />
+                  <span className="text-base text-[#433878] text-center font-normal">{slide.review}</span>
+                  <span className="bg-[#F4F1FA] rounded-full px-6 py-3 text-[#433878] text-sm font-normal w-fit mt-4"> {slide.name}</span>
+                </div>
+              ))}
+            </EmblaCarousel>
+          ) : (
+            <div className="flex justify-center items-center">
+              <p>Tidak ada ulasan yang tersedia</p>
+            </div>
+          )}
         </div>
       </div>
-      <button onClick={() => dialog.current?.showModal()} className="bg-[#E6E0F3] w-[40px] h-[40px] fixed bottom-5 right-5 rounded-full text-[#433878] font-semibold flex justify-center items-center">
+      <button
+        onClick={() => dialog.current?.showModal()}
+        className="chatbot__button bg-[#E6E0F3] w-[40px] h-[40px] fixed bottom-5 right-5 rounded-full text-[#433878] font-semibold flex justify-center items-center"
+      >
         B
       </button>
       <Chatbot ref={dialog} />
