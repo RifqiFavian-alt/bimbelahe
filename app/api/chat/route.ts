@@ -48,7 +48,7 @@ export async function POST(req: Request) {
       },
 
       body: JSON.stringify({
-        model: "meta-llama/llama-4-maverick:free",
+        model: "deepseek/deepseek-r1-0528:free",
         messages: [
           {
             role: "system",
