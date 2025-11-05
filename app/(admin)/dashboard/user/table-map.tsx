@@ -20,7 +20,7 @@ const tableMap: {
   columns: [
     { key: "name", label: "Nama" },
     { key: "email", label: "Email" },
-    { key: "role", label: "Role" },
+    { key: "role", label: "Role", render: (item) => (item.role === "admin" ? "Admin" : "Moderator") },
   ],
   actions: (row, refresh) => {
     return [

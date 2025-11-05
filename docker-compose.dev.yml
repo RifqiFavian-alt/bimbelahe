@@ -4,8 +4,10 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.dev
+    command: npm run dev
     ports:
       - "3000:3000"
+      - "5555:5555"
     env_file: .env
     depends_on:
       - db
@@ -30,6 +32,7 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: ahe_db
+      DATABASE_URL: postgresql://postgres:postgres@db:5432/ahe_db?schema=public
     ports:
       - "5432:5432"
     volumes:

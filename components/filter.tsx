@@ -1,10 +1,12 @@
 "use client";
-import React, { ForwardedRef, forwardRef } from "react";
+import React, { ForwardedRef, forwardRef, useEffect, useRef, useState } from "react";
 import { useForwardRef } from "@/hooks/use-forward-ref";
 import { IoClose } from "react-icons/io5";
+import { CustomCheckboxGroup } from "./custom-checkbox-group";
 
 type filterProps = {
-  action: (formData: FormData) => void;
+  action: (formData: FormData, selectedValues?: string[]) => void;
+  selectedValues?: string[];
   filterData: {
     inputName: string;
     inputType: string;
@@ -12,13 +14,32 @@ type filterProps = {
   }[];
 };
 
-const Filter = forwardRef(function Filter({ action, filterData }: filterProps, refDialog: ForwardedRef<HTMLDialogElement>) {
+const Filter = forwardRef(function Filter({ action, filterData, selectedValues = [] }: filterProps, refDialog: ForwardedRef<HTMLDialogElement>) {
   const dialogElement = useForwardRef<HTMLDialogElement>(refDialog);
+  const [selectedValuesArr, setSelectedValuesArr] = useState<string[]>(selectedValues);
+
+  const prevValuesRef = useRef<string[]>([]);
+
+  useEffect(() => {
+    const prev = prevValuesRef.current;
+    const next = selectedValues;
+
+    const areArraysEqual = next.length === prev.length && next.every((val) => prev.includes(val));
+
+    if (!areArraysEqual) {
+      setSelectedValuesArr(next);
+      prevValuesRef.current = next;
+    }
+  }, [selectedValues]);
+
+  const handleCheckboxChange = (value: string) => {
+    setSelectedValuesArr((prev) => (prev.includes(value) ? prev.filter((item) => item !== value) : [...prev, value]));
+  };
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
-    action(formData);
+    action(formData, selectedValuesArr);
     dialogElement.current?.close();
   };
 
@@ -26,24 +47,19 @@ const Filter = forwardRef(function Filter({ action, filterData }: filterProps, r
     <dialog ref={dialogElement} className="w-full max-w-lg max-h-full px-6 py-6 pb-10 relative outline-none rounded-md">
       <IoClose className="absolute top-5 cursor-pointer right-5 text-xl bg-[#B2A0DA] bg-opacity-40 rounded-full p-1 text-[#433878]" onClick={() => dialogElement.current?.close()} />
       <span className="font-semibold text-xl text-[#433878]">Filter</span>
+
       <form onSubmit={handleSubmit}>
         {filterData.map((filter, i) => (
           <div className="flex flex-col mt-5 gap-y-4" key={i}>
-            <span className="text-[#8A82AC]">{filter.inputName}</span>
-            <div className="flex gap-x-5">
-              {filter.inputType === "select" ? (
-                <select name={filter.inputName} className="border p-2 rounded-md">
-                  {filter.inputValue.map((value, i) => (
-                    <option key={i} value={value}>
-                      {value}
-                    </option>
-                  ))}
-                </select>
+            <span className="text-[#8A82AC] capitalize">{filter.inputName}</span>
+            <div className="flex gap-x-5 flex-wrap">
+              {filter.inputType === "checkbox" ? (
+                <CustomCheckboxGroup name={filter.inputName} values={filter.inputValue} selectedValues={selectedValuesArr} checkboxAction={handleCheckboxChange} />
               ) : (
                 filter.inputValue.map((value, i) => (
                   <div key={i} className="flex gap-x-1">
-                    <input type={filter.inputType} name={filter.inputName} id={value} value={value} className="outline-none" />
-                    <label htmlFor={value}>{value}</label>
+                    <input type={filter.inputType} name={filter.inputName} id={value + filter.inputName} value={value} className="outline-none" />
+                    <label htmlFor={value + filter.inputName}>{value}</label>
                   </div>
                 ))
               )}

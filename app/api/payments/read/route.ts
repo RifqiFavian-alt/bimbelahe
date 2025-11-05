@@ -41,12 +41,13 @@ export async function GET(req: Request) {
       prisma.payment.count({ where: filters }),
     ]);
 
-    const formattedPayments = payments.map(({ id, studentId, month, year, isPaid, student }) => ({
+    const formattedPayments = payments.map(({ id, studentId, month, year, isPaid, student, updatedAt }) => ({
       id,
       studentId,
       month,
       year,
       isPaid,
+      updatedAt,
       studentName: student?.name || null, // Akan `null` jika student sudah dihapus
     }));
 

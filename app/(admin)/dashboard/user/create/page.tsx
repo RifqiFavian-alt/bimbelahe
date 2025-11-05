@@ -15,13 +15,13 @@ const createUserFormScheme = z.object({
   name: z.string().min(1, { message: "Kolom nama wajib diisi." }),
   email: z.string().min(1, { message: "Kolom email wajib diisi." }).email("Struktur email tidak valid."),
   password: z.string().min(8, { message: "Password minimal 8 karakter" }),
-  role: z.enum(["ADMIN", "USER"], { message: "Role harus berupa ADMIN atau USER" }),
+  role: z.enum(["ADMIN", "MODERATOR"], { message: "Role harus berupa ADMIN atau MODERATOR" }),
 });
 type userFormScheme = z.infer<typeof createUserFormScheme>;
 
 const roles = [
   { label: "Admin", value: "ADMIN" },
-  { label: "User", value: "USER" },
+  { label: "Moderator", value: "MODERATOR" },
 ];
 
 function UserCreate() {

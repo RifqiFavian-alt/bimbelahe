@@ -3,14 +3,14 @@ import { prisma } from "@/lib/prisma";
 
 export async function POST(req: Request) {
   try {
-    const { name, email, question1, question2, question3, question4, review } = await req.json();
-
-    if (!name || !email || !question1 || !question2 || !question3 || !question4) {
+    const { name, email, questions, review } = await req.json();
+    console.log(questions);
+    if (!name || !email || !questions || questions.length === 0 || !review) {
       return NextResponse.json({ success: false, message: "Semua kolom wajib diisi, kecuali bagian ulasan (review)." }, { status: 400 });
     }
 
     const questionnaire = await prisma.questionnaire.create({
-      data: { name, email, question1, question2, question3, question4, review },
+      data: { name, email, questions, review },
     });
 
     return NextResponse.json({

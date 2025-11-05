@@ -187,7 +187,7 @@ function Home() {
           ) : slides.length > 0 ? (
             <EmblaCarousel options={OPTIONS}>
               {slides.map((slide, index) => (
-                <div className="embla__slide bg-white border border-[#7E60BF] rounded-md flex flex-col items-center justify-center gap-y-7 h-[var(--slide-height)]" key={index}>
+                <div className="embla__slide bg-white border border-[#7E60BF] rounded-md flex flex-col items-center justify-center gap-y-7 h-[var(--slide-height)] " key={index}>
                   <FaQuoteLeft className="text-4xl text-[#433878]" />
                   <span className="text-base text-[#433878] text-center font-normal">{slide.review}</span>
                   <span className="bg-[#F4F1FA] rounded-full px-6 py-3 text-[#433878] text-sm font-normal w-fit mt-4"> {slide.name}</span>

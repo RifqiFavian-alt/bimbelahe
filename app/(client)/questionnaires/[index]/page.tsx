@@ -78,6 +78,7 @@ function Questions() {
 
     const stored = sessionStorage.getItem("answers");
     const prevAnswers: string[] = stored ? JSON.parse(stored) : [];
+    console.log(prevAnswers);
 
     prevAnswers[currentIndex] = selectedAnswer;
     sessionStorage.setItem("answers", JSON.stringify(prevAnswers));
@@ -89,11 +90,8 @@ function Questions() {
         const { data } = await api.post("/api/questionnaires/create", {
           name: user?.name,
           email: user?.email,
-          question1: prevAnswers[0],
-          question2: prevAnswers[1],
-          question3: prevAnswers[2],
-          question4: prevAnswers[3],
-          review: prevAnswers[4],
+          questions: prevAnswers,
+          review: prevAnswers[prevAnswers.length - 1],
         });
         if (!data.success) throw new Error(data.message);
         router.push("/questionnaires/finish");

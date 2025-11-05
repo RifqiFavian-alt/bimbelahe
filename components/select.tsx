@@ -30,7 +30,7 @@ export function Select({ value, onChange, options, error, placeholder = "Pilih o
   }, []);
 
   return (
-    <div className="relative w-fit md:min-w-52" ref={selectRef}>
+    <div className="relative w-fit min-w-52" ref={selectRef}>
       <div className="flex flex-col bg-[#E6E0F3]  rounded-xl py-2 px-4 gap-y-1">
         <span className="text-xs text-[#7E60BF]">{placeholder}</span>
         <div className=" flex justify-between items-center w-full font-bold text-sm text-[#7E60BF] cursor-pointer" onClick={() => setOpen(!open)}>

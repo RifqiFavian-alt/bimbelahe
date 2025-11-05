@@ -23,8 +23,11 @@ model Student {
   id        String    @id @default(cuid())
   name      String
   email     String    @unique
-  phone     String?
+  phone     String
+  birthday  String
+  address   String
   payments  Payment[]
+  programs  Program[]  @relation("StudentPrograms")
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
   
@@ -51,10 +54,7 @@ model Questionnaire {
   id          String   @id @default(uuid()) 
   name        String   
   email       String   
-  question1   String  
-  question2   String  
-  question3   String   
-  question4   String   
+  questions   String[]   
   review      String?  
   isFeatured  Boolean  @default(false) 
   createdAt   DateTime @default(now())
@@ -62,13 +62,14 @@ model Questionnaire {
   @@map("questionnaires")
 }
 
-model Document {
-  id        String   @id @default(uuid())
-  title     String
-  content   String
-  format    String   
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+model Program {
+  id        String     @id @default(cuid())
+  name      String     @unique
+  students  Student[]  @relation("StudentPrograms")
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+
+  @@map("programs")
 }
 
 enum Role {

@@ -3,14 +3,14 @@ import { prisma } from "@/lib/prisma";
 
 export async function PUT(req: Request) {
   try {
-    const { id, name, email, phone } = await req.json();
+    const { id, name, email, phone, address, birthday, programIds } = await req.json();
 
-    if (!id || !name || !email || !phone) {
+    if (!id || !name || !email || !phone || !address || !birthday || !Array.isArray(programIds) || programIds.length === 0) {
       return NextResponse.json({ success: false, message: "Semua field wajib diisi." }, { status: 400 });
     }
 
     const existingStudent = await prisma.student.findUnique({
-      where: { id: id },
+      where: { id },
     });
 
     if (!existingStudent) {
@@ -18,8 +18,20 @@ export async function PUT(req: Request) {
     }
 
     const updatedStudent = await prisma.student.update({
-      where: { id: id },
-      data: { name, email, phone },
+      where: { id },
+      data: {
+        name,
+        email,
+        phone,
+        address,
+        birthday,
+        programs: {
+          set: programIds.map((id: string) => ({ id })),
+        },
+      },
+      include: {
+        programs: true,
+      },
     });
 
     return NextResponse.json(

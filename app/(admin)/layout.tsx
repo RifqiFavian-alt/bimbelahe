@@ -7,6 +7,7 @@ import { FaUserGroup, FaPen } from "react-icons/fa6";
 import { MdAdminPanelSettings } from "react-icons/md";
 import { AiFillDollarCircle } from "react-icons/ai";
 import { GiHamburgerMenu } from "react-icons/gi";
+import { TbReportSearch } from "react-icons/tb";
 import { Toaster } from "react-hot-toast";
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
@@ -19,23 +20,19 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     { name: "Pengguna", url: "/dashboard/user", icon: <MdAdminPanelSettings /> },
     { name: "Pembayaran", url: "/dashboard/payment", icon: <AiFillDollarCircle /> },
     { name: "Ulasan", url: "/dashboard/review", icon: <FaPen /> },
+    { name: "Laporan", url: "/dashboard/report", icon: <TbReportSearch /> },
   ];
+
   const activeNavlink = navlinkMap.find((navlink) => navlink.url === pathname);
 
   return (
     <>
-      <Toaster
-        reverseOrder={false}
-        containerStyle={{
-          top: 0,
-        }}
-        toastOptions={{ success: { duration: 700 }, error: { duration: 700 } }}
-      />
-      <div className="dashboard_layout relative h-screen overflow-hidden flex">
+      <Toaster toastOptions={{ success: { duration: 700 }, error: { duration: 700 } }} />
+      <div className="flex">
         <Navbar navlink={navlinkMap} pathname={pathname} isOpen={isOpen} setIsOpen={setIsOpen} />
-        <div className="flex flex-col gap-y-7 flex-auto px-5  md:px-20 py-10">
+        <main className="flex flex-col gap-y-7 flex-1 ml-0 md:ml-80 px-5 md:px-20 py-10 transition-all duration-300">
           {activeNavlink && (
-            <div className="flex justify-between items-center">
+            <div className="flex justify-between items-center mb-8">
               <div className="text-[#433878] text-2xl flex gap-x-2 items-center">
                 {activeNavlink.icon}
                 {activeNavlink.name}
@@ -48,7 +45,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             </div>
           )}
           {children}
-        </div>
+        </main>
       </div>
     </>
   );

@@ -5,7 +5,6 @@ import { prisma } from "@/lib/prisma";
 
 export async function POST(req: Request) {
   const { email, password } = await req.json();
-
   try {
     const user = await prisma.user.findUnique({ where: { email } });
 
@@ -22,7 +21,7 @@ export async function POST(req: Request) {
     const secretKey = process.env.JWT_SECRET!;
     const refreshSecret = process.env.JWT_REFRESH_SECRET!;
 
-    const accessToken = jwt.sign(payload, secretKey, { expiresIn: "5s" });
+    const accessToken = jwt.sign(payload, secretKey, { expiresIn: "1h" });
     const refreshToken = jwt.sign(payload, refreshSecret, { expiresIn: "7d" });
 
     const response = NextResponse.json({ success: true, message: "Berhasil masuk. Selamat datang kembali!" }, { status: 200 });

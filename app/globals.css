@@ -30,7 +30,7 @@ body {
 .embla__slide {
   transform: translate3d(0, 0, 0);
   margin-right: 20px;
-  min-width: 0;
+  min-width: 350px;
   padding: var(--slide-spacing);
 }
 .embla__slide:nth-last-child(1) {

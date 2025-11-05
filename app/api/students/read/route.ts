@@ -4,15 +4,41 @@ import { prisma } from "@/lib/prisma";
 export async function GET(req: Request) {
   try {
     const { searchParams } = new URL(req.url);
+
     const page = parseInt(searchParams.get("page") || "1", 10);
     const limit = parseInt(searchParams.get("limit") || "10", 10);
     const name = searchParams.get("name") || "";
+    const program = searchParams.getAll("program");
 
     if (isNaN(page) || page < 1 || isNaN(limit) || limit < 1) {
-      return NextResponse.json({ success: false, message: "Parameter halaman dan batas harus berupa angka yang valid." }, { status: 400 });
+      return NextResponse.json(
+        {
+          success: false,
+          message: "Parameter halaman dan batas harus berupa angka yang valid.",
+        },
+        { status: 400 }
+      );
     }
 
     const skip = (page - 1) * limit;
+
+    const whereFilter = {
+      ...(name && {
+        name: {
+          contains: name,
+          mode: "insensitive" as const,
+        },
+      }),
+      ...(program.length > 0 && {
+        programs: {
+          some: {
+            name: {
+              in: program,
+            },
+          },
+        },
+      }),
+    };
 
     const [students, totalStudents] = await Promise.all([
       prisma.student.findMany({
@@ -21,25 +47,22 @@ export async function GET(req: Request) {
           name: true,
           email: true,
           phone: true,
-        },
-        where: {
-          name: {
-            contains: name,
-            mode: "insensitive",
+          address: true,
+          birthday: true,
+          createdAt: true,
+          programs: {
+            select: {
+              id: true,
+              name: true,
+            },
           },
         },
+        where: whereFilter,
         skip,
         take: limit,
         orderBy: { createdAt: "asc" },
       }),
-      prisma.student.count({
-        where: {
-          name: {
-            contains: name,
-            mode: "insensitive",
-          },
-        },
-      }),
+      prisma.student.count({ where: whereFilter }),
     ]);
 
     const responseMessage = totalStudents === 0 ? "Tidak ada data siswa yang ditemukan." : "Data siswa berhasil diambil.";

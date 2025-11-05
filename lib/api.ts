@@ -1,5 +1,4 @@
 import axios, { AxiosError, AxiosRequestConfig } from "axios";
-import { redirect } from "next/navigation";
 const api = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL,
   withCredentials: true,
@@ -21,15 +20,18 @@ const processQueue = (error: AxiosError | null) => {
 };
 
 api.interceptors.response.use(
-  (response) => {
-    return response;
-  },
+  (response) => response,
   async (error: AxiosError) => {
     const originalRequest = error.config as AxiosRequestConfig & { _retry?: boolean };
 
+    // Abaikan error dari login atau refresh-token
+    if (originalRequest?.url?.includes("/api/auth/login") || originalRequest?.url?.includes("/api/auth/refresh-token")) {
+      return Promise.reject(error);
+    }
+
     if (error.response?.status === 401 && !originalRequest._retry) {
       if (isRefreshing) {
-        return new Promise<unknown>((resolve, reject) => {
+        return new Promise((resolve, reject) => {
           failedQueue.push({ resolve, reject });
         }).then(() => api.request(originalRequest));
       }
@@ -39,7 +41,6 @@ api.interceptors.response.use(
 
       try {
         const refreshResponse = await api.post("/api/auth/refresh-token");
-
         if (refreshResponse.data.success) {
           processQueue(null);
           return api.request(originalRequest);
@@ -52,7 +53,10 @@ api.interceptors.response.use(
         } catch (logoutError) {
           console.error("Gagal logout:", logoutError);
         }
-        redirect("/login?error=SessionExpired");
+
+        if (typeof window !== "undefined") {
+          window.location.href = "/login?error=SessionExpired";
+        }
       } finally {
         isRefreshing = false;
       }

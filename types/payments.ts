@@ -4,6 +4,7 @@ type Payment = {
   month: number;
   year: number;
   isPaid: boolean;
+  updatedAt: Date;
   studentName: string | null;
 };
 

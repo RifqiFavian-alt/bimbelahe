@@ -24,21 +24,23 @@ const Login: React.FC = () => {
 
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
-
   const onSubmit = handleSubmit(async (values) => {
     setError(null);
     setLoading(true);
-
     try {
       const { data } = await api.post("/api/auth/login", values);
+      console.log(data);
       if (!data.success) throw new Error(data.message || "Login gagal");
       router.push("/dashboard/student");
     } catch (err) {
       if (axios.isAxiosError(err)) {
+        console.log(err);
         setError(err.response?.data?.message || "Terjadi kesalahan, silakan coba lagi.");
       } else if (err instanceof Error) {
         setError(err.message);
+        console.log(err);
       } else {
+        console.log(err);
         setError("Terjadi kesalahan, silakan coba lagi.");
       }
     } finally {

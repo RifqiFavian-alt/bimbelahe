@@ -35,10 +35,7 @@ export async function GET(req: Request) {
       prisma.questionnaire.findMany({
         select: {
           id: true,
-          question1: true,
-          question2: true,
-          question3: true,
-          question4: true,
+          questions: true,
           name: true,
           email: true,
           review: true,
