@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
+    "@openrouter/ai-sdk-provider": "^1.2.0",
     "@prisma/client": "^6.6.0",
     "@tensorflow/tfjs": "^4.13.0",
     "axios": "^1.7.9",
