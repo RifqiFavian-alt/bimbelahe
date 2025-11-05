@@ -27,6 +27,7 @@ interface OpenRouterResponse {
   error?: string;
 }
 
+console.log("OPENROUTER_API_KEY:", process.env.OPENROUTER_API_KEY ? "✅ Loaded" : "❌ Missing");
 export async function POST(req: Request) {
   try {
     const { messages } = await req.json();
