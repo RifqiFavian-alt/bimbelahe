@@ -42,8 +42,6 @@ export async function POST(req: Request) {
       method: "POST",
       headers: {
         Authorization: `Bearer ${process.env.OPENROUTER_API_KEY}`,
-        "HTTP-Referer": process.env.NEXT_PUBLIC_SITE_URL || "",
-        "X-Title": process.env.NEXT_PUBLIC_SITE_NAME || "",
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
@@ -62,6 +60,7 @@ export async function POST(req: Request) {
         presence_penalty: 0.3,
       }),
     });
+    console.log(response);
 
     if (!response.ok) {
       throw new Error(`OpenRouter error: ${response.statusText}`);
