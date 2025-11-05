@@ -43,7 +43,7 @@ export async function POST(req: Request) {
       headers: {
         Authorization: `Bearer ${process.env.OPENROUTER_API_KEY}`,
         "Content-Type": "application/json",
-        "HTTP-Referer": "https://ahe.vercel.app",
+        "HTTP-Referer": "https://bimbelahe.vercel.app/",
         "X-Title": "AHE Chatbot",
       },
 
