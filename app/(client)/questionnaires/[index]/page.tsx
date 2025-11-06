@@ -78,7 +78,6 @@ function Questions() {
 
     const stored = sessionStorage.getItem("answers");
     const prevAnswers: string[] = stored ? JSON.parse(stored) : [];
-    console.log(prevAnswers);
 
     prevAnswers[currentIndex] = selectedAnswer;
     sessionStorage.setItem("answers", JSON.stringify(prevAnswers));

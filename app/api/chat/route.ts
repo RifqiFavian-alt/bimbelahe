@@ -37,24 +37,18 @@ export async function POST(req: Request) {
       apiKey: process.env.OPENROUTER_API_KEY!,
     });
 
-    const modelMessages = convertToModelMessages([
-      {
-        role: "system",
-        parts: [{ type: "text", text: systemPrompt }],
-      },
-      ...messages,
-    ]);
+    const modelMessages = convertToModelMessages([...messages]);
 
     const result = streamText({
-      model: openrouter("meta-llama/llama-4-maverick:free"),
+      model: openrouter("deepseek/deepseek-r1:free"),
       messages: modelMessages,
+      system: systemPrompt,
       temperature: 0.7,
       maxOutputTokens: 400,
       topP: 0.9,
       frequencyPenalty: 0.3,
       presencePenalty: 0.3,
     });
-    console.log(result.toTextStreamResponse());
     return result.toUIMessageStreamResponse();
   } catch (error) {
     console.error("Error processing chat request:", error);

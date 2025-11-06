@@ -4,7 +4,6 @@ import { prisma } from "@/lib/prisma";
 export async function POST(req: Request) {
   try {
     const { name, email, questions, review } = await req.json();
-    console.log(questions);
     if (!name || !email || !questions || questions.length === 0 || !review) {
       return NextResponse.json({ success: false, message: "Semua kolom wajib diisi, kecuali bagian ulasan (review)." }, { status: 400 });
     }

@@ -29,7 +29,7 @@ const Login: React.FC = () => {
     setLoading(true);
     try {
       const { data } = await api.post("/api/auth/login", values);
-      console.log(data);
+
       if (!data.success) throw new Error(data.message || "Login gagal");
       router.push("/dashboard/student");
     } catch (err) {

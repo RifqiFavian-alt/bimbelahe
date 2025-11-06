@@ -1,12 +1,11 @@
 "use client";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import Image, { StaticImageData } from "next/image";
-// import { Chatbot } from "@/components/chatbot";
-import { Chatbot } from "../../components/chatbot-window";
 import { FaQuoteLeft, FaWhatsapp } from "react-icons/fa6";
 import { EmblaCarousel } from "@/components/embla-carousel";
 import { EmblaOptionsType } from "embla-carousel";
 import { ReviewCarousel } from "@/types/review";
+import { Chatbot } from "@/components/chatbot-window";
 
 // Image Assets
 import arrow1 from "@/public/assets/arrow1.webp";
@@ -52,7 +51,6 @@ function Home() {
     try {
       setIsLoading(true);
       const { data } = await api.get(`/api/questionnaires/read?isFeatured=true`);
-      console.log(data);
       if (!data.success) throw new Error(data.message);
       setSlides(data.data.questionnaires.map((questionnaire: ReviewCarousel) => ({ name: questionnaire.name, review: questionnaire.review })));
     } catch (error) {

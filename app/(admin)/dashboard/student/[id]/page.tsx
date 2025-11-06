@@ -38,7 +38,6 @@ function StudentEdit() {
 
   const [programs, setPrograms] = useState<Program[]>([]);
   const selectedPrograms = watch("programIds") || [];
-  console.log(selectedPrograms);
   const router = useRouter();
   const { id } = useParams<{ id: string }>();
   const [loading, setLoading] = useState(false);

@@ -35,7 +35,6 @@ function Registration() {
 
   const onSubmit = handleSubmit(async (values) => {
     setIsGenerating(true);
-    console.log(values);
     try {
       const { data } = await api.post(
         "/api/registration",
@@ -70,8 +69,6 @@ function Registration() {
       if (pdfUrl) URL.revokeObjectURL(pdfUrl);
     };
   }, [pdfUrl]);
-
-  console.log(pdfUrl);
 
   return (
     <div className="w-full h-full px-5 md:px-20 lg:px-24 pt-20 pb-40">
