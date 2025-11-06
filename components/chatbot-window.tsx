@@ -12,7 +12,7 @@ export const Chatbot = forwardRef(function Chatbot(_props, refDialog: ForwardedR
   const dialogElement = useForwardRef<HTMLDialogElement>(refDialog);
 
   // === 🔹 Streaming Chat Hook ===
-  const { messages, sendMessage, status, setMessages } = useChat({
+  const { messages, sendMessage, status, setMessages, error } = useChat({
     transport: new DefaultChatTransport({
       api: "/api/chat",
     }),
@@ -94,6 +94,7 @@ export const Chatbot = forwardRef(function Chatbot(_props, refDialog: ForwardedR
             );
           })}
           {status === "submitted" && <div className="message assistant text-sm text-[#B2A0DA]">Mengetik...</div>}
+          {error && <div className="message assistant text-sm text-[#B2A0DA]">Terjadi kesalahan, silakan refresh dan coba lagi nanti.</div>}
         </div>
 
         {/* === Input === */}
