@@ -1,7 +1,8 @@
 "use client";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import Image, { StaticImageData } from "next/image";
-import { Chatbot } from "@/components/chatbot";
+// import { Chatbot } from "@/components/chatbot";
+import { Chatbot } from "../../components/chatbot-window";
 import { FaQuoteLeft, FaWhatsapp } from "react-icons/fa6";
 import { EmblaCarousel } from "@/components/embla-carousel";
 import { EmblaOptionsType } from "embla-carousel";
