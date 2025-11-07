@@ -15,20 +15,6 @@ Aturan jawaban:
 4. Gunakan bahasa indonesia yang baik, sopan dan professional
 `;
 
-// interface Message {
-//   role: "system" | "user" | "assistant";
-//   content: string;
-// }
-
-// interface OpenRouterResponse {
-//   choices?: {
-//     message: Message;
-//     finish_reason: string;
-//     index: number;
-//   }[];
-//   error?: string;
-// }
-
 export async function POST(req: Request) {
   try {
     const { messages }: { messages: UIMessage[] } = await req.json();
@@ -40,7 +26,7 @@ export async function POST(req: Request) {
     const modelMessages = convertToModelMessages([...messages]);
 
     const result = streamText({
-      model: openrouter("deepseek/deepseek-r1:free"),
+      model: openrouter("meta-llama/llama-4-maverick:free"),
       messages: modelMessages,
       system: systemPrompt,
       temperature: 0.7,
@@ -55,36 +41,3 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }
 }
-
-// const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
-//   method: "POST",
-//   headers: {
-//     Authorization: `Bearer ${process.env.OPENROUTER_API_KEY}`,
-//     "HTTP-Referer": process.env.NEXT_PUBLIC_SITE_URL || "",
-//     "X-Title": process.env.NEXT_PUBLIC_SITE_NAME || "",
-//     "Content-Type": "application/json",
-//   },
-//   body: JSON.stringify({
-//     model: "meta-llama/llama-4-maverick:free",
-//     messages: [
-//       {
-//         role: "system",
-//         content: systemPrompt,
-//       },
-//       ...lastMessages,
-//     ],
-//     temperature: 0.7,
-//     max_tokens: 400,
-//     top_p: 0.9,
-//     frequency_penalty: 0.3,
-//     presence_penalty: 0.3,
-//   }),
-// });
-
-// if (!response.ok) {
-//   throw new Error(`OpenRouter error: ${response.statusText}`);
-// }
-
-// const responseData: OpenRouterResponse = await response.json();
-
-// return NextResponse.json(responseData);

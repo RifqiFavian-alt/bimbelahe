@@ -63,7 +63,7 @@ export const Chatbot = forwardRef(function Chatbot(_props, refDialog: ForwardedR
 
   return (
     <dialog ref={dialogElement}>
-      <div className="chat-container w-full z-100 sm:w-1/2 h-[600px] sm:right-5 sm:bottom-20 sm:fixed lg:w-4/12 bg-[#F4F1FA] rounded-md py-6 px-10 gap-y-6 flex flex-col">
+      <div className="chat-container w-full z-100 h-[600px] sm:right-5 sm:bottom-20 sm:fixed lg:w-4/12 bg-[#F4F1FA] rounded-md py-6 px-10 gap-y-6 flex flex-col">
         <IoClose onClick={() => dialogElement?.current?.close()} className="absolute top-5 cursor-pointer right-5 text-xl bg-[#B2A0DA] bg-opacity-40 rounded-full p-1 text-[#433878]" />
 
         {/* === Header === */}

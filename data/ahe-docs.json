@@ -1,105 +1,42 @@
 {
   "profile": {
-    "nama_bimbel": "AHE (Academic Help & Excellence)",
-    "tahun_berdiri": 2015,
+    "nama_bimbel": "Bimbel AHE Tambun",
     "alamat": {
-      "jalan": "Jl. Pendidikan No. 123",
-      "kota": "Jakarta Selatan",
-      "provinsi": "DKI Jakarta",
-      "kode_pos": "12560"
+      "jalan": "Jl. Pendidikan 2 No.12",
+      "kecamatan": "Tambun Selatan",
+      "kota": "Kabupaten Bekasi",
+      "provinsi": "Jawa Barat",
+      "kode_pos": "17510"
     },
     "kontak": {
-      "telepon": "021-12345678",
-      "whatsapp": "+6281234567890",
-      "email": "info@ahe-bimbel.com",
-      "website": "https://www.ahe-bimbel.com"
+      "telepon": "+6281294468507",
+      "whatsapp": "+6281294468507",
+      "email": "esisukaesih82@gmail.com",
+      "website": "https://bimbelahe.vercel.app"
     }
   },
   "pengajar": [
     {
       "id": "P001",
-      "nama": "Dr. Andi Wijaya, M.Sc.",
-      "bidang": ["Matematika", "Fisika"],
-      "kualifikasi": "S2 Fisika Teori - Universitas Indonesia",
-      "pengalaman": 10,
+      "nama": "Ibu Iyah",
+      "program": ["Ala Sekolah", "Prisma", "Brainy"],
       "jadwal": ["Senin", "Rabu", "Jumat"]
     },
     {
       "id": "P002",
-      "nama": "Sarah Nurul, S.Pd.",
-      "bidang": ["Bahasa Inggris", "Bahasa Indonesia"],
-      "kualifikasi": "S1 Pendidikan Bahasa - UNJ",
-      "pengalaman": 5,
-      "jadwal": ["Selasa", "Kamis", "Sabtu"]
+      "nama": "Ibu Pipih",
+      "program": ["Ala Sekolah", "Prisma", "Brainy"],
+      "jadwal": ["Senin", "Rabu", "Jumat"]
+    },
+    {
+      "id": "P003",
+      "nama": "Ibu Mita",
+      "program": ["Ala Sekolah", "Prisma", "Brainy"],
+      "jadwal": ["Senin", "Rabu", "Jumat"]
     }
   ],
-  "program": {
-    "regular": {
-      "hari": ["Senin", "Rabu", "Jumat"],
-      "waktu": "16:00-18:00 WIB",
-      "materi": "Pelajaran Sekolah + Tryout",
-      "biaya": "Rp 1.500.000/bulan"
-    },
-    "intensif": {
-      "hari": ["Selasa", "Kamis", "Sabtu"],
-      "waktu": "08:00-12:00 WIB",
-      "materi": "Persiapan UTBK/SNBT",
-      "biaya": "Rp 2.500.000/bulan"
-    },
-    "privat": {
-      "waktu": "Fleksibel",
-      "materi": "Custom Request",
-      "biaya": "Rp 300.000/sesi (90 menit)"
-    }
-  },
-  "fasilitas": ["Ruang kelas ber-AC", "Perpustakaan digital", "Akses bank soal 10 tahun terakhir", "Konsultasi karir gratis", "Aplikasi monitoring perkembangan belajar"],
-  "jadwal_kelas": [
-    {
-      "hari": "Senin",
-      "sesi": [
-        {
-          "waktu": "16:00-17:30",
-          "kelas": "Matematika X",
-          "pengajar": "P001",
-          "ruang": "A101"
-        },
-        {
-          "waktu": "17:30-19:00",
-          "kelas": "Fisika XI",
-          "pengajar": "P001",
-          "ruang": "A102"
-        }
-      ]
-    },
-    {
-      "hari": "Selasa",
-      "sesi": [
-        {
-          "waktu": "08:00-09:30",
-          "kelas": "Intensif UTBK Bahasa Inggris",
-          "pengajar": "P002",
-          "ruang": "B201"
-        }
-      ]
-    }
-  ],
-  "prestasi": {
-    "tahun_2023": {
-      "rata_nilai_UTBK": 678.5,
-      "peserta_terbaik": "Rina Susanto (Nilai 789.5)",
-      "persen_kelulusan": "98.7%"
-    }
-  },
-  "testimoni": [
-    {
-      "nama": "Budi Santoso",
-      "sekolah": "SMAN 8 Jakarta",
-      "komentar": "Berhasil meningkatkan nilai matematika saya dari 65 ke 85 dalam 3 bulan!"
-    },
-    {
-      "nama": "Dewi Lestari",
-      "sekolah": "SMAN 45 Jakarta",
-      "komentar": "Pengajarnya sangat sabar dan metode pembelajarannya menyenangkan"
-    }
-  ]
+  "jadwal": {
+    "hari": ["Senin", "Rabu", "Jumat"],
+    "waktu": ["08:00-12:00 WIB", "14:00-17:00 WIB"]
+  }
 }

@@ -156,15 +156,15 @@ function Questions() {
         )}
       </div>
 
-      <div className="questionnaires__navigation  w-full lg:w-6/12 mx-auto flex justify-center gap-x-16 pt-16">
+      <div className="questionnaires__navigation  w-full lg:w-6/12 mx-auto flex justify-center gap-x-4 md:gap-x-16 pt-16">
         <button onClick={handlePrevButton} className="questionnaires__navigation__prev flex items-center gap-x-2 border-2 border-[#B2A0DA] ps-2 pe-8 py-1 rounded-3xl">
-          <div className="w-9 h-9 rounded-full bg-[#7E60BF] flex items-center justify-center">
+          <div className="w-7 h-7 md:w-9 md:h-9 rounded-full bg-[#7E60BF] flex items-center justify-center">
             <IoArrowBack className="text-xl text-white" />
           </div>
           <span className="text-[#433878]">Sebelumnya</span>
         </button>
         <button onClick={handleNextButton} className="questionnaires__navigation__next flex flex-row-reverse items-center gap-x-2 border-2 border-[#B2A0DA] ps-8 pe-2 py-1 rounded-3xl">
-          <div className="w-9 h-9 rounded-full bg-[#7E60BF] flex items-center justify-center">
+          <div className="w-7 h-7 md:w-9 md:h-9 rounded-full bg-[#7E60BF] flex items-center justify-center">
             <IoArrowBack className="text-xl text-white rotate-180" />
           </div>
           <span className="text-[#433878]">{currentIndex === questions.length - 1 ? "Selesai" : "Selanjutnya"}</span>

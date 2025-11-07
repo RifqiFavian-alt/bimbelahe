@@ -67,9 +67,9 @@ function Home() {
   const dialog = useRef<HTMLDialogElement>(null);
   return (
     <>
-      <div className="w-full h-full px-5 md:px-20 lg:px-24 pb-40 flex flex-col gap-y-28 ">
+      <div className="w-full h-full px-5 md:px-20 lg:px-24 pb-40 flex flex-col gap-y-28">
         <Image src={rectangle1} alt="assets" className="absolute top-0 left-0 -z-10 " />
-        <Image src={rectangle2} alt="assets" className="absolute -right-36 -top-20 md:right-0 -z-10 h-[755px] w-[400px]" />
+        <Image src={rectangle2} alt="assets" className="absolute -top-20 right-0 -z-10 h-[755px] w-[400px]" />
 
         {/* Hero */}
         <div className="hero flex justify-center relative md:justify-around items-center flex-col-reverse md:flex-row md:gap-x-16 lg:gap-x-36 gap-y-5">
@@ -106,7 +106,7 @@ function Home() {
             <Card image={brainy} width={130} title="Brainy" description="Berani Bicara, Jago English Bareng Brainy" />
           </div>
           <Image src={rectangle3} alt="assets" className="absolute -left-28 top-0 " />
-          <Image src={rectangle4} alt="assets" className="absolute -right-28" />
+          <Image src={rectangle4} alt="assets" className="absolute -right-5 md:-right-28" />
         </div>
 
         {/* Galeri */}
@@ -161,7 +161,7 @@ function Home() {
         {/* Other */}
         <div className="other flex flex-col relative md:flex-row justify-center items-center md:gap-x-10 gap-x-36 py-5 px-5">
           <Image src="/assets/illustration1.webp" alt="illustration1" width={450} height={450} />
-          <Image src={arrow2} alt="assets" className="absolute bottom-10 -right-10 w-48 md:-right-32 md:bottom-20 lg:top-48 md:w-72 -z-10" />
+          <Image src={arrow2} alt="assets" className="absolute bottom-10 -right-5 w-48 md:-right-32 md:bottom-20 lg:top-48 md:w-72 -z-10" />
           <div className="flex flex-col gap-y-5 md:gap-y-3 lg:gap-y-7 items-center justify-center">
             <span className="text-3xl md:text-2xl lg:text-4xl font-bold text-[#433878] max-w-96 md:max-w-4xl lg:max-w-96 ">Belajar lebih terarah dengan jadwal yang fleksibel!</span>
             <span className="text-base text-[#433878] max-w-96 md:max-w-5xl lg:max-w-96">Jadwalkan waktu terbaik untuk anak Anda dan wujudkan pembelajaran yang menyenangkan! </span>
@@ -174,7 +174,7 @@ function Home() {
         {/* Review */}
         <div id="Ulasan" className="flex flex-col gap-y-20 relative items-center justify-center scroll-mt-10">
           <Image src={rectangle7} alt="assets" className="absolute -left-36 top-0 md:-top-96 md:-left-48 -z-10" />
-          <Image src={rectangle5} alt="assets" className="absolute -right-36 bottom-0 md:-bottom-96 md:-right-48 -z-10" />
+          <Image src={rectangle5} alt="assets" className="absolute -right-5  sm:-right-36 bottom-0 md:-bottom-96 md:-right-48 -z-10" />
           <div className="review__title flex flex-col items-center text-[#433878] text-center">
             <span className="text-sm font-semibold tracking-wide">ULASAN PENGGUNA</span>
             <span className="text-3xl font-semibold max-w-96">Pendapat Mereka Tentang Kami</span>

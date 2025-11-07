@@ -82,7 +82,7 @@ function Registration() {
       </div>
       <form onSubmit={onSubmit} className="registration__form text-[#433878] pt-10 w-11/12 m-auto">
         <div className="flex flex-wrap justify-start gap-4 text-start">
-          <div className="bg-[#E6E0F3] flex flex-col gap-y-1 rounded-xl py-2 px-4 w-4/12">
+          <div className="bg-[#E6E0F3] flex flex-col gap-y-1 rounded-xl py-2 px-4 w-full md:w-4/12">
             <label className="text-[#7E60BF] text-xs">Nama Lengkap</label>
             <input {...register("fullname")} placeholder="cth: Arana Ruri" className="bg-transparent outline-none font-bold text-sm text-[#7E60BF]" type="text" />
             {errors.fullname && (
@@ -102,7 +102,7 @@ function Registration() {
               </span>
             )}
           </div>
-          <div className="bg-[#E6E0F3] flex flex-col gap-y-1 rounded-xl py-2 px-4 w-3/12">
+          <div className="bg-[#E6E0F3] flex flex-col gap-y-1 rounded-xl py-2 px-4 w-full sm:w-3/12">
             <label className="text-[#7E60BF] text-xs">Tempat & Tanggal Lahir</label>
             <input {...register("birthday")} placeholder="cth: Jakarta, 01 Januari 2000" className="bg-transparent outline-none font-bold text-sm text-[#7E60BF]" type="text" />
             {errors.birthday && (
@@ -112,7 +112,7 @@ function Registration() {
               </span>
             )}
           </div>
-          <div className="bg-[#E6E0F3] flex flex-col gap-y-1 rounded-xl py-2 px-4 w-3/12">
+          <div className="bg-[#E6E0F3] flex flex-col gap-y-1 rounded-xl py-2 px-4 w-full sm:w-3/12">
             <label className="text-[#7E60BF] text-xs">Nama Ibu</label>
             <input {...register("parentmom")} placeholder="cth: Arana" className="bg-transparent outline-none font-bold text-sm text-[#7E60BF]" type="text" />
             {errors.parentmom && (
@@ -122,7 +122,7 @@ function Registration() {
               </span>
             )}
           </div>
-          <div className="bg-[#E6E0F3] flex flex-col gap-y-1 rounded-xl py-2 px-4 w-3/12">
+          <div className="bg-[#E6E0F3] flex flex-col gap-y-1 rounded-xl py-2 px-4 w-full sm:w-3/12">
             <label className="text-[#7E60BF] text-xs">Nama Ayah</label>
             <input {...register("parentdad")} placeholder="cth: Yuka" className="bg-transparent outline-none font-bold text-sm text-[#7E60BF]" type="text" />
             {errors.parentdad && (
@@ -132,7 +132,7 @@ function Registration() {
               </span>
             )}
           </div>
-          <div className="bg-[#E6E0F3] flex flex-col gap-y-1 rounded-xl py-2 px-4 w-8/12 ">
+          <div className="bg-[#E6E0F3] flex flex-col gap-y-1 rounded-xl py-2 px-4 w-full sm:w-8/12 ">
             <label className="text-[#7E60BF] text-xs">Alamat</label>
             <textarea {...register("address")} placeholder="cth: Jl. Kebon Jeruk, Jakarta" className="bg-transparent outline-none font-bold text-sm text-[#7E60BF] h-[40px]" />
             {errors.address && (
@@ -142,7 +142,7 @@ function Registration() {
               </span>
             )}
           </div>
-          <div className="bg-[#E6E0F3] flex flex-col gap-y-1 rounded-xl py-2 px-4 w-4/12">
+          <div className="bg-[#E6E0F3] flex flex-col gap-y-1 rounded-xl py-2 px-4 w-full sm:w-4/12">
             <label className="text-[#7E60BF] text-xs">Nomor Telepon</label>
             <input {...register("phone")} placeholder="cth: 08123456789" className="bg-transparent outline-none font-bold text-sm text-[#7E60BF]" type="text" />
             {errors.phone && (
@@ -152,7 +152,7 @@ function Registration() {
               </span>
             )}
           </div>
-          <div className="bg-[#E6E0F3] flex flex-col gap-y-1 rounded-xl py-2 px-4 w-3/12">
+          <div className="bg-[#E6E0F3] flex flex-col gap-y-1 rounded-xl py-2 px-4 w-4/8 sm:w-3/12">
             <label className="text-[#7E60BF] text-xs">Sumber Info Les</label>
             <input {...register("info")} placeholder="cth: Instagram" className="bg-transparent outline-none font-bold text-sm text-[#7E60BF]" type="text" />
             {errors.info && (
