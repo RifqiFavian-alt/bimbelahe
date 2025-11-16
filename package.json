@@ -24,6 +24,7 @@
     "ai": "^5.0.87",
     "axios": "^1.7.9",
     "bcryptjs": "^2.4.3",
+    "cookies-next": "^6.1.1",
     "embla-carousel-react": "^8.6.0",
     "jose": "^5.9.6",
     "jsonwebtoken": "^9.0.2",
