@@ -21,7 +21,7 @@ type userFormScheme = z.infer<typeof createUserFormScheme>;
 
 const roles = [
   { label: "Admin", value: "ADMIN" },
-  { label: "Moderator", value: "MODERATOR" },
+  { label: "Moderator", value: "USER" },
 ];
 
 function UserCreate() {
