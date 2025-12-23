@@ -26,7 +26,7 @@ export async function POST(req: Request) {
     const modelMessages = convertToModelMessages([...messages]);
 
     const result = streamText({
-      model: openrouter("allenai/olmo-3.1-32b-think:free"),
+      model: openrouter("meta-llama/llama-3.1-405b-instruct:free"),
       messages: modelMessages,
       system: systemPrompt,
       temperature: 0.7,
