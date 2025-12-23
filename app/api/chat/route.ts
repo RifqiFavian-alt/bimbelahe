@@ -26,7 +26,7 @@ export async function POST(req: Request) {
     const modelMessages = convertToModelMessages([...messages]);
 
     const result = streamText({
-      model: openrouter("meituan/longcat-flash-chat:free"),
+      model: openrouter("allenai/olmo-3.1-32b-think:free"),
       messages: modelMessages,
       system: systemPrompt,
       temperature: 0.7,
