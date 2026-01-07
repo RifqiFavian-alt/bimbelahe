@@ -26,7 +26,7 @@ export async function POST(req: Request) {
     const modelMessages = convertToModelMessages([...messages]);
 
     const result = streamText({
-      model: openrouter("meta-llama/llama-3.1-405b-instruct:free"),
+      model: openrouter("tngtech/deepseek-r1t2-chimera:free"),
       messages: modelMessages,
       system: systemPrompt,
       temperature: 0.7,
