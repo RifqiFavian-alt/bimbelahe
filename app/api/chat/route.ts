@@ -26,7 +26,7 @@ export async function POST(req: Request) {
     const modelMessages = convertToModelMessages([...messages]);
 
     const result = streamText({
-      model: openrouter("tngtech/deepseek-r1t2-chimera:free"),
+      model: openrouter("arcee-ai/trinity-mini:free"),
       messages: modelMessages,
       system: systemPrompt,
       temperature: 0.7,
